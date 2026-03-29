@@ -9,6 +9,18 @@
 
 ---
 
+## Скриншоты
+
+**Сервер** (`/docs`, терминал с uvicorn и т.п.)
+
+![Сервер AgentAPI](server.png)
+
+**Клиент macOS** (иконка в строке меню с мини-столбиками)
+
+![Клиент macOS — menu bar](clientMacOs.png)
+
+---
+
 ## Быстрый старт
 
 1. Поднимите сервер: см. [Server/README.md](Server/README.md).

@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="AGENT_API_", env_file=".env", extra="ignore")
 
-    host: str = "192.168.0.146"
+    host: str = "0.0.0.0"
     port: int = 8765
     log_level: str = "info"
 
