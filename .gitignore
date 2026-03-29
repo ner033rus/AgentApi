@@ -1,0 +1,22 @@
+# Python
+Server/.venv/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+*.egg
+
+# Swift / SPM
+ClientMacOS/.build/
+**/.swiftpm/
+
+# Собранный клиент (пересобирается build-app.sh)
+ClientMacOS/AgentAPIMenuBar.app/
+
+# OS / IDE
+.DS_Store
+.idea/
+*.swp
+*~
