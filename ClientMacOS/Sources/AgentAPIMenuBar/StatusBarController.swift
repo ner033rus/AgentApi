@@ -11,7 +11,7 @@ final class StatusBarController: NSObject {
         self.item = item
         guard let button = item.button else { return }
 
-        button.toolTip = "AgentAPI: CPU · RAM · GPU · Ollama"
+        button.toolTip = "AgentAPI: CPU · RAM · GPU-Util · VRAM (Memory-Usage)"
         let chart = BarChartView(frame: .zero)
         chart.translatesAutoresizingMaskIntoConstraints = false
         chart.metrics = .offline

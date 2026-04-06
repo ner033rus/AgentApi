@@ -27,10 +27,14 @@ struct RamBlock: Codable {
 struct GpuBlock: Codable {
     let available: Bool?
     let utilPercent: Double?
+    let memoryUsedMib: Double?
+    let memoryTotalMib: Double?
 
     enum CodingKeys: String, CodingKey {
         case available
         case utilPercent = "util_percent"
+        case memoryUsedMib = "memory_used_mib"
+        case memoryTotalMib = "memory_total_mib"
     }
 }
 
@@ -53,8 +57,8 @@ struct DisplayMetrics {
     /// 0…100, при недоступной GPU — nil
     let gpuUtil: Double?
     let gpuAvailable: Bool
-    /// Доля RAM, занятая процессами Ollama, 0…100
-    let ollamaRamPercent: Double
+    /// Занятость VRAM (Memory-Usage), 0…100; nil если нет данных nvidia-smi
+    let gpuMemoryPercent: Double?
     let reachable: Bool
 }
 
@@ -64,7 +68,7 @@ extension DisplayMetrics {
         ram: 0,
         gpuUtil: nil,
         gpuAvailable: false,
-        ollamaRamPercent: 0,
+        gpuMemoryPercent: nil,
         reachable: false
     )
 }

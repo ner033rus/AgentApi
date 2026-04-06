@@ -46,17 +46,20 @@ enum MetricsClient {
     }
 
     private static func map(_ m: MetricsPayload) -> DisplayMetrics {
-        let totalRam = max(m.ram.totalBytes, 1)
-        let ollamaBytes = m.ollama.processes.reduce(0) { $0 + $1.memoryBytes }
-        let ollamaPct = min(100, Double(ollamaBytes) / Double(totalRam) * 100)
         let gpuAvail = m.gpu.available ?? true
         let gpuUtil = m.gpu.utilPercent
+        let gpuMemPct: Double? = {
+            guard gpuAvail, let u = m.gpu.memoryUsedMib, let t = m.gpu.memoryTotalMib, t > 0 else {
+                return nil
+            }
+            return clampPercent(u / t * 100)
+        }()
         return DisplayMetrics(
             cpu: clampPercent(m.cpu.percent),
             ram: clampPercent(m.ram.percent),
             gpuUtil: gpuUtil.map { clampPercent($0) },
             gpuAvailable: gpuAvail,
-            ollamaRamPercent: clampPercent(ollamaPct),
+            gpuMemoryPercent: gpuMemPct,
             reachable: true
         )
     }

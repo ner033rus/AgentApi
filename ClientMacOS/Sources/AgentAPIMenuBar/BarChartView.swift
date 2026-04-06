@@ -1,6 +1,6 @@
 import AppKit
 
-/// Четыре мини-столбика: CPU, RAM, GPU, Ollama (доля RAM под Ollama).
+/// Четыре мини-столбика: CPU, RAM, GPU-Util, VRAM (Memory-Usage %).
 final class BarChartView: NSView {
     var metrics: DisplayMetrics = .offline {
         didSet { needsDisplay = true }
@@ -30,13 +30,18 @@ final class BarChartView: NSView {
             if metrics.gpuAvailable { return height(for: 0) }
             return h * 0.12
         }()
-        let olH = height(for: metrics.ollamaRamPercent)
+        let vramH: CGFloat = {
+            if !metrics.reachable { return 0 }
+            if let p = metrics.gpuMemoryPercent { return height(for: p) }
+            if metrics.gpuAvailable { return height(for: 0) }
+            return h * 0.12
+        }()
 
         let values: [(CGFloat, NSColor)] = [
             (cpuH, NSColor.systemCyan),
             (ramH, NSColor.systemGreen),
             (gpuH, gpuBarColor()),
-            (olH, NSColor.systemPurple),
+            (vramH, NSColor.systemPurple),
         ]
 
         for i in 0 ..< barCount {
