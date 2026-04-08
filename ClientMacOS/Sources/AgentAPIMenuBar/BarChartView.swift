@@ -21,6 +21,10 @@ final class BarChartView: NSView {
         let totalW = bounds.width - pad * 2
         let barW = (totalW - CGFloat(barCount - 1) * gap) / CGFloat(barCount)
         let x0 = pad
+        
+        // Тонкая обводка помогает различать столбики на тёмном фоне menu bar.
+        let strokeColor = NSColor.labelColor.withAlphaComponent(0.28)
+        let strokeWidth: CGFloat = 0.75
 
         let cpuH = height(for: metrics.cpu)
         let ramH = height(for: metrics.ram)
@@ -48,12 +52,20 @@ final class BarChartView: NSView {
             let x = x0 + CGFloat(i) * (barW + gap)
             let rect = NSRect(x: x, y: pad, width: barW, height: h)
             NSColor.separatorColor.withAlphaComponent(0.35).setFill()
-            NSBezierPath(roundedRect: rect, xRadius: 1.5, yRadius: 1.5).fill()
+            let bgPath = NSBezierPath(roundedRect: rect, xRadius: 1.5, yRadius: 1.5)
+            bgPath.fill()
+            strokeColor.setStroke()
+            bgPath.lineWidth = strokeWidth
+            bgPath.stroke()
 
             let fillH = max(1, values[i].0)
             let fillRect = NSRect(x: x, y: pad, width: barW, height: fillH)
             values[i].1.setFill()
-            NSBezierPath(roundedRect: fillRect, xRadius: 1.2, yRadius: 1.2).fill()
+            let fillPath = NSBezierPath(roundedRect: fillRect, xRadius: 1.2, yRadius: 1.2)
+            fillPath.fill()
+            strokeColor.setStroke()
+            fillPath.lineWidth = strokeWidth
+            fillPath.stroke()
         }
 
         if !metrics.reachable {
